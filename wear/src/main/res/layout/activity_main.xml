@@ -16,11 +16,11 @@
         android:padding="@dimen/inner_frame_layout_padding"
         app:boxedEdges="all">
 
-        <TextView
-            android:id="@+id/text"
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world" />
+            android:text="@string/hello_world"
+            android:onClick="click"/>
 
     </FrameLayout>
 </android.support.wear.widget.BoxInsetLayout>
