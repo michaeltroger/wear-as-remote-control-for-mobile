@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <service android:name=".DatarecordingRemotecontrolService" />
+        <service android:name=".SensorRecording" />
     </application>
 
 </manifest>
