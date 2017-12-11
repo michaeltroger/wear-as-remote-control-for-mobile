@@ -9,4 +9,4 @@ The smartphone module (mobile folder) is a standalone example app allowing to cr
 
 The smartwatch module (wear folder) needs a smartphone with the _mobile_ module installed. It can send start and stop commands which result in opening/closing of a notification on the smartphone just like it can be done directly on the phone. 
 
-This application was intented to be used with Android Nougat (Android 7) and Oreo (Android 8) devices.
+This application is intented to be used with Android Nougat (Android 7) and Oreo (Android 8) devices.
