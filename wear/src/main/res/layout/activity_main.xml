@@ -19,8 +19,18 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world"
-            android:onClick="click"/>
+            android:text="start"
+            android:id="@+id/start"
+            android:layout_gravity="top|center"
+            android:onClick="start"/>
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_gravity="bottom|center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="stop"
+            android:text="stop" />
 
     </FrameLayout>
 </android.support.wear.widget.BoxInsetLayout>

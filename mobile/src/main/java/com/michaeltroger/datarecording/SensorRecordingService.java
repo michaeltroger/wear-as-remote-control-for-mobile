@@ -16,7 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
-public class SensorRecording extends Service implements SensorEventListener {
+public class SensorRecordingService extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -34,9 +34,11 @@ public class SensorRecording extends Service implements SensorEventListener {
         }
 
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
-        final Notification notification = notificationBuilder.setOngoing(true)
+        final Notification notification = notificationBuilder
+                .setOngoing(true)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setContentTitle("recording")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
 
@@ -58,6 +60,13 @@ public class SensorRecording extends Service implements SensorEventListener {
         final NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         service.createNotificationChannel(chan);
         return channelId;
+    }
+
+    @Override
+    public void onDestroy() {
+        final NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        service.cancel(101);
+        super.onDestroy();
     }
 
     @Nullable
