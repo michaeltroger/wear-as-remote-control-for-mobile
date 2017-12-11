@@ -59,10 +59,9 @@ public class SensorRecordingService extends Service implements SensorEventListen
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
         );
-        notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-
         notificationManager.createNotificationChannel(notificationChannel);
+        
         return CHANNEL_ID;
     }
 
