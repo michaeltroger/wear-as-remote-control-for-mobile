@@ -74,32 +74,22 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
     }
 
     private void setupDatarecodingRemotecontrol() {
-        Log.d(TAG, "setupDatarecodingRemotecontrol");
+        new Thread(() -> {
+            CapabilityApi.GetCapabilityResult result =
+                    Wearable.CapabilityApi.getCapability(
+                            googleApiClient, DATARECORDING_REMOTECONTROL_CAPABILITY_NAME,
+                            CapabilityApi.FILTER_REACHABLE).await();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                CapabilityApi.GetCapabilityResult result =
-                        Wearable.CapabilityApi.getCapability(
-                                googleApiClient, DATARECORDING_REMOTECONTROL_CAPABILITY_NAME,
-                                CapabilityApi.FILTER_REACHABLE).await();
-
-                updateTranscriptionCapability(result.getCapability());
-            }
+            updateTranscriptionCapability(result.getCapability());
         }).start();
-
-
-
-        final CapabilityApi.CapabilityListener capabilityListener = this::updateTranscriptionCapability;
 
         Wearable.CapabilityApi.addCapabilityListener(
                 googleApiClient,
-                capabilityListener,
+                this::updateTranscriptionCapability,
                 DATARECORDING_REMOTECONTROL_CAPABILITY_NAME);
     }
 
     private void updateTranscriptionCapability(final CapabilityInfo capabilityInfo) {
-        Log.d(TAG, "searching nodes...");
         final Set<Node> connectedNodes = capabilityInfo.getNodes();
 
         transcriptionNodeId = pickBestNodeId(connectedNodes);
