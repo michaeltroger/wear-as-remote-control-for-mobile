@@ -7,9 +7,10 @@ import android.content.Intent;
 import android.util.Log;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
+    private static final String TAG = NotificationActionReceiver.class.getSimpleName();
+    
     public static final String NOTIFICATION_ACTION = "command";
     public static final String NOTIFICATION_STOP_COMMAND = "stop";
-    private static final String TAG = NotificationActionReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
