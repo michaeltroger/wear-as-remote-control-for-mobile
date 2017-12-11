@@ -53,7 +53,6 @@ public class SensorRecordingService extends Service implements SensorEventListen
                 stopRecordingIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
 
-
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
         final Notification notification = notificationBuilder
                 .setOngoing(true)
@@ -61,6 +60,7 @@ public class SensorRecordingService extends Service implements SensorEventListen
                 .setContentTitle(NOTIFICATION_TITLE)
                 .addAction(R.drawable.ic_launcher_foreground, NOTIFICATION_STOP_TITLE, stopRecordingPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
 
