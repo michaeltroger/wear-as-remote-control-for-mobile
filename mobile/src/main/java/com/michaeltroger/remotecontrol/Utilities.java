@@ -1,4 +1,4 @@
-package com.michaeltroger.datarecording;
+package com.michaeltroger.remotecontrol;
 
 import android.content.Context;
 import android.content.Intent;

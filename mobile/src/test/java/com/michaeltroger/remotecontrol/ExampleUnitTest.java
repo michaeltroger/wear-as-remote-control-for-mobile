@@ -1,4 +1,4 @@
-package com.michaeltroger.datarecording;
+package com.michaeltroger.remotecontrol;
 
 import org.junit.Test;
 
