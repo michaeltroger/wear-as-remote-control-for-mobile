@@ -25,11 +25,7 @@
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/datarecording_remotecontrol" />
             </intent-filter>
         </service>
-        <receiver android:name=".BootReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+
         <service android:name=".SensorRecordingService" />
     </application>
 
