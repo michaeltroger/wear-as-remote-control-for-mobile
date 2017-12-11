@@ -43,14 +43,14 @@ public class MainActivity extends WearableActivity {
     }
 
     public void start(@NonNull final View view) {
-        sendMessageToMobile(START_COMMAND);
+        sendCommandToMobile(START_COMMAND);
     }
 
     public void stop(@NonNull final View view) {
-        sendMessageToMobile(STOP_COMMAND);
+        sendCommandToMobile(STOP_COMMAND);
     }
 
-    private void sendMessageToMobile(@NonNull final String text) {
+    private void sendCommandToMobile(@NonNull final String command) {
         if (transcriptionNodeId == null) {
             Log.e(TAG, "Unable to retrieve node with datarecording remotecontrol capability");
             return;
@@ -60,13 +60,13 @@ public class MainActivity extends WearableActivity {
                 googleApiClient,
                 transcriptionNodeId,
                 DATARECORDING_REMOTECONTROL_MESSAGE_PATH,
-                text.getBytes()
+                command.getBytes()
         ).setResultCallback(
                 result -> {
                     if (result.getStatus().isSuccess()) {
-                        Log.d(TAG, "msg sent to mobile");
+                        Log.d(TAG, "command "+ command+" sent to mobile");
                     } else {
-                        Log.e(TAG, "failed to send msg to mobile");
+                        Log.e(TAG, "failed to send command "+ command +" to mobile");
                     }
                 }
         );

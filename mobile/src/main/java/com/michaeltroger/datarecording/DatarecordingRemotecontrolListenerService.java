@@ -1,11 +1,13 @@
 package com.michaeltroger.datarecording;
 
+import android.util.Log;
+
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
-public class DatarecordingRemotecontrolService extends WearableListenerService {
+public class DatarecordingRemotecontrolListenerService extends WearableListenerService {
 
-    private static final String TAG = DatarecordingRemotecontrolService.class.getSimpleName();
+    private static final String TAG = DatarecordingRemotecontrolListenerService.class.getSimpleName();
 
     private static final String START_COMMAND = "start";
     private static final String STOP_COMMAND = "stop";
@@ -13,6 +15,7 @@ public class DatarecordingRemotecontrolService extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         final String command = new String(messageEvent.getData());
+        Log.d(TAG, "received " + command + " command from wear");
 
         switch (command) {
             case START_COMMAND:

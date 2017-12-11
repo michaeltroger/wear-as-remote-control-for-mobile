@@ -3,10 +3,10 @@ package com.michaeltroger.datarecording;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,8 +20,11 @@ public class SensorRecordingService extends Service implements SensorEventListen
     private static final int NOTIFICATION_ID = 101;
     private static final String NOTIFICATION_TITLE = "Recording data";
 
-    private static final String CHANNEL_ID = "My Service";
-    private static final String CHANNEL_NAME = "My Background Service";
+    private static final String CHANNEL_ID = "com.michaeltroger.datarecording.DATARECORDING";
+    private static final String CHANNEL_NAME = "Data recording";
+
+
+    private static final String NOTIFICATION_STOP_TITLE = "Stop";
 
     private NotificationManager notificationManager;
 
@@ -40,11 +43,20 @@ public class SensorRecordingService extends Service implements SensorEventListen
             channelId = createNotificationChannel();
         }
 
+        final Intent stopRecordingIntent = new Intent(getApplicationContext(), NotificationActionReceiver.class);
+        stopRecordingIntent.putExtra(NotificationActionReceiver.NOTIFICATION_ACTION, NotificationActionReceiver.NOTIFICATION_STOP_COMMAND);
+        final PendingIntent stopRecordingPendingIntent = PendingIntent.getActivity(
+                this,
+                (int) System.currentTimeMillis(),
+                stopRecordingIntent,
+                0);
+
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
         final Notification notification = notificationBuilder
                 .setOngoing(true)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(NOTIFICATION_TITLE)
+                .addAction(R.drawable.ic_launcher_foreground, NOTIFICATION_STOP_TITLE, stopRecordingPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
@@ -61,7 +73,7 @@ public class SensorRecordingService extends Service implements SensorEventListen
         );
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         notificationManager.createNotificationChannel(notificationChannel);
-        
+
         return CHANNEL_ID;
     }
 
