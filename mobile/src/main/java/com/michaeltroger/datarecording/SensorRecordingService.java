@@ -59,8 +59,7 @@ public class SensorRecordingService extends Service implements SensorEventListen
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
         );
-        notificationChannel.setLightColor(Color.BLUE);
-        notificationChannel.setImportance(NotificationManager.IMPORTANCE_NONE);
+        notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
 
         notificationManager.createNotificationChannel(notificationChannel);
