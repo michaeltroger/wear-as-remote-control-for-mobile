@@ -22,7 +22,7 @@ public class SensorRecordingService extends Service implements SensorEventListen
 
     private static final String CHANNEL_ID = "My Service";
     private static final String CHANNEL_NAME = "My Background Service";
-    
+
     private NotificationManager notificationManager;
 
     @Override

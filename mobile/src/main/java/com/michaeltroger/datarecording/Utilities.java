@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 
 public class Utilities {
+
     public static void startRecording(@NonNull final Context context) {
         final Intent intent =  new Intent(context, SensorRecordingService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -18,14 +19,5 @@ public class Utilities {
     public static void stopRecording(@NonNull final Context context) {
         final Intent intent =  new Intent(context, SensorRecordingService.class);
         context.stopService(intent);
-    }
-
-    public static void startRemotecontrolListeningService(@NonNull final Context context) {
-        final Intent intent =  new Intent(context, DatarecordingRemotecontrolService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
     }
 }
