@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Data Recording</string>
+
+    <string name="datarecording_remotecontrol_path_prefix" translatable="false">/datarecording_remotecontrol</string>
 </resources>

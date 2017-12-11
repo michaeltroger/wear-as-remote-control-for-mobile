@@ -1,28 +1,28 @@
 package com.michaeltroger.datarecording;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.CapabilityApi;
 import com.google.android.gms.wearable.CapabilityInfo;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
-import java.util.List;
 import java.util.Set;
 
-public class MainActivity extends WearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends WearableActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String DATARECORDING_REMOTECONTROL_MESSAGE_PATH = "/datarecording_remotecontrol";
     private static final String DATARECORDING_REMOTECONTROL_CAPABILITY_NAME = "datarecording_remotecontrol";
-    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private static final String START_COMMAND = "start";
+    private static final String STOP_COMMAND = "stop";
 
     private GoogleApiClient googleApiClient;
     private String transcriptionNodeId;
@@ -36,8 +36,6 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
                 .build();
         googleApiClient.connect();
 
@@ -45,11 +43,11 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
     }
 
     public void start(@NonNull final View view) {
-        sendMessageToMobile("start");
+        sendMessageToMobile(START_COMMAND);
     }
 
     public void stop(@NonNull final View view) {
-        sendMessageToMobile("stop");
+        sendMessageToMobile(STOP_COMMAND);
     }
 
     private void sendMessageToMobile(@NonNull final String text) {
@@ -65,8 +63,10 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
                 text.getBytes()
         ).setResultCallback(
                 result -> {
-                    if (!result.getStatus().isSuccess()) {
-                        Log.e(TAG, "failed to send msg");
+                    if (result.getStatus().isSuccess()) {
+                        Log.d(TAG, "msg sent to mobile");
+                    } else {
+                        Log.e(TAG, "failed to send msg to mobile");
                     }
                 }
         );
@@ -75,10 +75,12 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
 
     private void setupDatarecodingRemotecontrol() {
         new Thread(() -> {
-            CapabilityApi.GetCapabilityResult result =
+            final CapabilityApi.GetCapabilityResult result =
                     Wearable.CapabilityApi.getCapability(
-                            googleApiClient, DATARECORDING_REMOTECONTROL_CAPABILITY_NAME,
-                            CapabilityApi.FILTER_REACHABLE).await();
+                            googleApiClient,
+                            DATARECORDING_REMOTECONTROL_CAPABILITY_NAME,
+                            CapabilityApi.FILTER_REACHABLE
+                    ).await();
 
             updateTranscriptionCapability(result.getCapability());
         }).start();
@@ -91,9 +93,7 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
 
     private void updateTranscriptionCapability(final CapabilityInfo capabilityInfo) {
         final Set<Node> connectedNodes = capabilityInfo.getNodes();
-
         transcriptionNodeId = pickBestNodeId(connectedNodes);
-        Log.d(TAG, "best node:"+transcriptionNodeId);
     }
 
     private String pickBestNodeId(final Set<Node> nodes) {
@@ -108,19 +108,4 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
         return bestNodeId;
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.d(TAG, "Google API Client connected");
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "Google API Client connection fail");
-    }
 }
