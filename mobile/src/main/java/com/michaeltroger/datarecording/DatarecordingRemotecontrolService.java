@@ -22,19 +22,17 @@ public class DatarecordingRemotecontrolService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        final String path = messageEvent.getPath();
-        final String data = new String(messageEvent.getData());
+        final String command = new String(messageEvent.getData());
 
-        Log.d("received msg path:", path);
-        Log.d("received msg:", data);
-
-        switch (data) {
+        switch (command) {
             case "start":
-                Log.d(TAG, "start recording");
+                Utilities.startRecording(getApplicationContext());
                 break;
             case "stop":
-                Log.d(TAG, "stop recording");
+                Utilities.stopRecording(getApplicationContext());
                 break;
+            default:
+                throw new UnsupportedOperationException();
         }
     }
 }

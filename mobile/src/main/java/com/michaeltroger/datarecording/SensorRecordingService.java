@@ -17,17 +17,24 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
 public class SensorRecordingService extends Service implements SensorEventListener {
+    private static final int NOTIFICATION_ID = 101;
+    private static final String NOTIFICATION_TITLE = "Recording data";
+
+    private static final String CHANNEL_ID = "My Service";
+    private static final String CHANNEL_NAME = "My Background Service";
+    
+    private NotificationManager notificationManager;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
         startInForeground();
 
         return START_NOT_STICKY;
     }
 
     private void startInForeground() {
-        final NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         String channelId = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             channelId = createNotificationChannel();
@@ -37,35 +44,32 @@ public class SensorRecordingService extends Service implements SensorEventListen
         final Notification notification = notificationBuilder
                 .setOngoing(true)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("recording")
+                .setContentTitle(NOTIFICATION_TITLE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
 
-        startForeground(101, notification);
+        startForeground(NOTIFICATION_ID, notification);
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private String createNotificationChannel() {
-        String channelId = "my_service";
-        String channelName = "My Background Service";
-        NotificationChannel chan = new NotificationChannel(
-                channelId,
-                channelName,
+        final NotificationChannel notificationChannel = new NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
         );
-        chan.setLightColor(Color.BLUE);
-        chan.setImportance(NotificationManager.IMPORTANCE_NONE);
-        chan.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-        final NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        service.createNotificationChannel(chan);
-        return channelId;
+        notificationChannel.setLightColor(Color.BLUE);
+        notificationChannel.setImportance(NotificationManager.IMPORTANCE_NONE);
+        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+
+        notificationManager.createNotificationChannel(notificationChannel);
+        return CHANNEL_ID;
     }
 
     @Override
     public void onDestroy() {
-        final NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        service.cancel(101);
+        notificationManager.cancel(NOTIFICATION_ID);
         super.onDestroy();
     }
 
