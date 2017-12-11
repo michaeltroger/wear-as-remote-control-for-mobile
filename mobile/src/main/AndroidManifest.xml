@@ -25,7 +25,9 @@
             </intent-filter>
         </service>
 
-        <service android:name=".SensorRecordingService" />
+        <service android:name=".SensorRecordingService" android:exported="false"/>
+        <service android:name=".NotificationActionService" android:exported="true" />
+
     </application>
 
 </manifest>

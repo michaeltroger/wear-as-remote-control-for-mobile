@@ -5,8 +5,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -43,13 +45,14 @@ public class SensorRecordingService extends Service implements SensorEventListen
             channelId = createNotificationChannel();
         }
 
-        final Intent stopRecordingIntent = new Intent(getApplicationContext(), NotificationActionReceiver.class);
-        stopRecordingIntent.putExtra(NotificationActionReceiver.NOTIFICATION_ACTION, NotificationActionReceiver.NOTIFICATION_STOP_COMMAND);
-        final PendingIntent stopRecordingPendingIntent = PendingIntent.getActivity(
-                this,
-                (int) System.currentTimeMillis(),
+        final Intent stopRecordingIntent = new Intent(this, NotificationActionService.class);
+        stopRecordingIntent.putExtra(NotificationActionService.NOTIFICATION_ACTION, NotificationActionService.NOTIFICATION_STOP_COMMAND);
+
+        final PendingIntent stopRecordingPendingIntent = PendingIntent.getService(this,
+                0,
                 stopRecordingIntent,
-                0);
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
 
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
         final Notification notification = notificationBuilder
