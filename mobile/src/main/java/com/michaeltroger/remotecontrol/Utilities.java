@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 public class Utilities {
 
     public static void startRecording(@NonNull final Context context) {
-        final Intent intent =  new Intent(context, SensorRecordingService.class);
+        final Intent intent =  new Intent(context, MyService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent);
         } else {
@@ -17,7 +17,7 @@ public class Utilities {
     }
 
     public static void stopRecording(@NonNull final Context context) {
-        final Intent intent =  new Intent(context, SensorRecordingService.class);
+        final Intent intent =  new Intent(context, MyService.class);
         context.stopService(intent);
     }
 }

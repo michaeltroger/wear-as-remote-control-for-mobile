@@ -16,15 +16,12 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
-public class SensorRecordingService extends Service implements SensorEventListener {
+public class MyService extends Service {
     private static final int NOTIFICATION_ID = 101;
-    private static final String NOTIFICATION_TITLE = "Recording data";
+    private static final String NOTIFICATION_TITLE = "Started";
 
-    private static final String CHANNEL_ID = "com.michaeltroger.datarecording.DATARECORDING";
-    private static final String CHANNEL_NAME = "Data recording";
-
-
-    private static final String NOTIFICATION_STOP_TITLE = "Stop";
+    private static final String CHANNEL_ID = "com.michaeltroger.remotecontrol.REMOTECONTROL";
+    private static final String CHANNEL_NAME = "Remote Control";
 
     private NotificationManager notificationManager;
 
@@ -43,20 +40,11 @@ public class SensorRecordingService extends Service implements SensorEventListen
             channelId = createNotificationChannel();
         }
 
-        final Intent stopRecordingIntent = new Intent(this, NotificationActionService.class);
-        stopRecordingIntent.putExtra(NotificationActionService.NOTIFICATION_ACTION, NotificationActionService.NOTIFICATION_STOP_COMMAND);
-
-        final PendingIntent stopRecordingPendingIntent = PendingIntent.getService(this,
-                0,
-                stopRecordingIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
         final Notification notification = notificationBuilder
                 .setOngoing(true)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(NOTIFICATION_TITLE)
-                .addAction(R.drawable.ic_launcher_foreground, NOTIFICATION_STOP_TITLE, stopRecordingPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(Notification.CATEGORY_SERVICE)
@@ -90,11 +78,4 @@ public class SensorRecordingService extends Service implements SensorEventListen
         return null;
     }
 
-    @Override
-    public void onSensorChanged(final SensorEvent sensorEvent) {
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {}
 }

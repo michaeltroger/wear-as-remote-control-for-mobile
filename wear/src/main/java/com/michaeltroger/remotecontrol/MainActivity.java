@@ -18,8 +18,8 @@ public class MainActivity extends WearableActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private static final String DATARECORDING_REMOTECONTROL_MESSAGE_PATH = "/datarecording_remotecontrol";
-    private static final String DATARECORDING_REMOTECONTROL_CAPABILITY_NAME = "datarecording_remotecontrol";
+    private static final String REMOTECONTROL_MESSAGE_PATH = "/remotecontrol";
+    private static final String REMOTECONTROL_CAPABILITY_NAME = "remotecontrol";
 
     private static final String START_COMMAND = "start";
     private static final String STOP_COMMAND = "stop";
@@ -39,7 +39,7 @@ public class MainActivity extends WearableActivity {
                 .build();
         googleApiClient.connect();
 
-        setupDatarecodingRemotecontrol();
+        setupRemotecontrol();
     }
 
     public void start(@NonNull final View view) {
@@ -52,14 +52,14 @@ public class MainActivity extends WearableActivity {
 
     private void sendCommandToMobile(@NonNull final String command) {
         if (transcriptionNodeId == null) {
-            Log.e(TAG, "Unable to retrieve node with datarecording remotecontrol capability");
+            Log.e(TAG, "Unable to retrieve node with remotecontrol capability");
             return;
         }
 
         Wearable.MessageApi.sendMessage(
                 googleApiClient,
                 transcriptionNodeId,
-                DATARECORDING_REMOTECONTROL_MESSAGE_PATH,
+                REMOTECONTROL_MESSAGE_PATH,
                 command.getBytes()
         ).setResultCallback(
                 result -> {
@@ -73,12 +73,12 @@ public class MainActivity extends WearableActivity {
 
     }
 
-    private void setupDatarecodingRemotecontrol() {
+    private void setupRemotecontrol() {
         new Thread(() -> {
             final CapabilityApi.GetCapabilityResult result =
                     Wearable.CapabilityApi.getCapability(
                             googleApiClient,
-                            DATARECORDING_REMOTECONTROL_CAPABILITY_NAME,
+                            REMOTECONTROL_CAPABILITY_NAME,
                             CapabilityApi.FILTER_REACHABLE
                     ).await();
 
@@ -88,7 +88,7 @@ public class MainActivity extends WearableActivity {
         Wearable.CapabilityApi.addCapabilityListener(
                 googleApiClient,
                 this::updateTranscriptionCapability,
-                DATARECORDING_REMOTECONTROL_CAPABILITY_NAME);
+                REMOTECONTROL_CAPABILITY_NAME);
     }
 
     private void updateTranscriptionCapability(final CapabilityInfo capabilityInfo) {

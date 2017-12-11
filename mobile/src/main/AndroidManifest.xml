@@ -18,15 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.michaeltroger.remotecontrol.DatarecordingRemotecontrolListenerService" >
+        <service android:name="com.michaeltroger.remotecontrol.RemotecontrolListenerService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
                 <data android:scheme="wear" android:host="*" android:pathPrefix="@string/datarecording_remotecontrol_path_prefix" />
             </intent-filter>
         </service>
 
-        <service android:name="com.michaeltroger.remotecontrol.SensorRecordingService" android:exported="false"/>
-        <service android:name="com.michaeltroger.remotecontrol.NotificationActionService" android:exported="true" />
+        <service android:name="com.michaeltroger.remotecontrol.MyService" android:exported="false"/>
 
     </application>
 
