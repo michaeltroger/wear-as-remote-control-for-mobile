@@ -1,0 +1,5 @@
+
+_squid:UselessImportCheck"6Remove this unused import 'android.app.PendingIntent'.(šºŞ—8§á¹„,
+bsquid:UselessImportCheck"4Remove this unused import 'android.hardware.Sensor'.(á¥ı”úÿÿÿÿ8Æšê¹„,
+bsquid:UselessImportCheck"9Remove this unused import 'android.hardware.SensorEvent'.(•Á¸è8Æšê¹„,
+osquid:UselessImportCheck"ARemove this unused import 'android.hardware.SensorEventListener'.(ëƒÃ×şÿÿÿÿ8À³ê¹„,

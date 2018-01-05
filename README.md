@@ -1,6 +1,6 @@
 # Android Wear as Remote Control for Android Smartphone
 <img src="/wear.png" width="120" alt="wear module">
-<img src="/mobile.png" width="120" alt="mobile module">
+<img src="/mobile.jpg" width="120" alt="mobile module">
 
 
 A simple Android Studio 3 starter project for using an Android Wear 2 Smartwatch as remote control for an Android Smartphone.
